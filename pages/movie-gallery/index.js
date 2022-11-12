@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import IMDB_CHIP_ICON from "../../src/images/ranking-platforms/imdb/imdb-chip-icon.png";
 import { Inter } from "@next/font/google";
 
-
 const inter = Inter({
   weight: "900",
 });
@@ -18,18 +17,25 @@ const MovieGallery = () => {
   }, []);
 
   const loadMovies = async () => {
-    const {data: _token} = await axios.post("http://localhost:3005/signin", {
-      email: "filmotek",
-      password: "admin",
-    });
-    setToken(_token)
-    const _movies = await axios("http://localhost:3005/api/movie-gallery", {
+    /*    const { data: _token } = await axios.post(
+      `${process.env.FILMOTEK_API}/signin`,
+      {
+        email: process.env.FILMOTEK_USER,
+        password: process.env.FILMOTEK_PASSWORD,
+      }
+    );
+    setToken(_token);
+    const _movies = await axios(
+      `${process.env.FILMOTEK_API}/api/movie-gallery`,
+      {
         headers: {
           Authorization: `Bearer ${_token}`,
         },
-      });
-      console.log(_movies);
-      setMovies(_movies.data.data);
+      }
+    );
+    console.log(_movies);*/
+    const _movies = await axios(`${process.env.FILMOTEK_API}/movie-gallery`);
+    setMovies(_movies.data.data);
   };
   return (
     <Box
