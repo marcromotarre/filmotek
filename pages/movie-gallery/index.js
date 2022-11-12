@@ -34,7 +34,7 @@ const MovieGallery = () => {
       }
     );
     console.log(_movies);*/
-    const _movies = await axios(`${process.env.FILMOTEK_API}/movie-gallery`);
+    const _movies = await axios(`https://movies-api-lxas.onrender.com/movie-gallery`);
     setMovies(_movies.data.data);
   };
   return (
