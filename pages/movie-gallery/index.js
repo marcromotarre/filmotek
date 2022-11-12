@@ -34,7 +34,7 @@ const MovieGallery = () => {
       }
     );
     console.log(_movies);*/
-    const _movies = await axios(`https://movies-api-lxas.onrender.com/movie-gallery`);
+    const _movies = await axios(`${process.env.FILMOTEK_API}/movie-gallery`);
     setMovies(_movies.data.data);
   };
   return (
@@ -125,3 +125,18 @@ const MovieGallery = () => {
 };
 
 export default MovieGallery;
+
+
+// coses a fer
+ /*
+    arreglar filmaffinity
+    posar nom vots a imdb
+    fer chip filmaffinity
+
+    slider de num vots 
+    slider de minim nota
+
+    tornar a galeria
+
+
+ */
