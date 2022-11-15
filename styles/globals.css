@@ -24,3 +24,7 @@ a {
     background: black;
   }
 }
+
+h3, h6, p {
+  color: white;
+}

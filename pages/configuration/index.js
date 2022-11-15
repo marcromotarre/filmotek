@@ -1,78 +1,139 @@
 import { Box, CardMedia, Grid, Typography } from "@mui/material";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-
-import NETFLIX_APP_ICON from "../../src/images/platforms/netflix/netflix-app-icon.png";
-import HBO_MAX_APP_ICON from "../../src/images/platforms/hbo-max/hbo-max-app-icon.png";
-import AMAZON_PRIME_VIDEO_APP_ICON from "../../src/images/platforms/amazon-prime-video/amazon-prime-video-app-icon.png";
-import APPLE_TV_APP_ICON from "../../src/images/platforms/apple-tv/apple-tv-app-icon.png";
-import DISNEY_PLUS_APP_ICON from "../../src/images/platforms/disney-plus/disney-plus-app-icon.png";
-import FILMIN_APP_ICON from "../../src/images/platforms/filmin/filmin-app-icon.png";
-
-const PLATFORMS = [
-  { name: "NETFLIX", appIcon: NETFLIX_APP_ICON, selected: true },
-  { name: "HBO", appIcon: HBO_MAX_APP_ICON, selected: false },
-  {
-    name: "AMAZON PRIME VIDEO",
-    appIcon: AMAZON_PRIME_VIDEO_APP_ICON,
-    selected: false,
-  },
-  { name: "DISNEY", appIcon: DISNEY_PLUS_APP_ICON, selected: false },
-  { name: "APPLE", appIcon: APPLE_TV_APP_ICON, selected: false },
-  { name: "FILMIN", appIcon: FILMIN_APP_ICON, selected: false },
-];
+import { useRecoilState } from "recoil";
+import BorderPoster from "../../src/components/posters/border-poster";
+import RoundedPoster from "../../src/components/posters/rounded-poster";
+import ConfigSection from "../../src/components/sections/config-section";
+import { MOVIE_EXAMPLE } from "../../src/data.js/movie-example";
+import POSTERS from "../../src/data.js/posters";
+import {
+  userPlatformsState,
+  userPostersState,
+} from "../../src/states/user-state";
 
 const MovieGallery = () => {
   useEffect(() => {}, []);
 
+  const [userPlatforms, setUserPlatforms] = useRecoilState(userPlatformsState);
+  const [userPosters, setUserPosters] = useRecoilState(userPostersState);
   return (
     <Box
       sx={{
         backgroundColor: "#3d3d3d",
-        display: "grid",
-        justifyContent: "center",
+        display: "flex",
         alignItems: "center",
-        width: "100%",
-        paddingTop: "30px",
-        gridTemplateColumns: "100%",
+        justifyContent: "center",
       }}
     >
-      <Typography>¿Que plataformas tienes?</Typography>
-      <Typography>Ver información sobre las plataformas</Typography>
       <Box
         sx={{
-          display: "flex",
+          display: "grid",
           justifyContent: "center",
           alignItems: "center",
-          width: "100%",
+          width: "80%",
+          paddingTop: "30px",
+          gridTemplateColumns: "100%",
+          rowGap: "20px",
         }}
       >
-        <Box
-          sx={{
-            display: "grid",
-            gridTemplateColumns: "auto auto auto",
-            columnGap: "40px",
-            rowGap: "40px",
-            width: "70%",
-          }}
+        <ConfigSection
+          title={"¿Que plataformas tienes?"}
+          subtitle={"Ver información sobre las plataformas"}
         >
-          {PLATFORMS.map((platform) => (
-            <CardMedia
-              key={platform.name}
-              component="img"
+          <Box>
+            <Box
               sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
                 width: "100%",
-                borderRadius: "15px",
-                boxShadow: platform.selected
-                  ? "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)"
-                  : "",
-                opacity: platform.selected ? 1 : 0.1,
               }}
-              image={platform.appIcon.src}
-              alt={platform.name}
-            ></CardMedia>
-          ))}
-        </Box>
+            >
+              <Box
+                sx={{
+                  display: "grid",
+                  gridTemplateColumns: "auto auto auto",
+                  columnGap: "40px",
+                  rowGap: "40px",
+                  width: "90%",
+                }}
+              >
+                {Object.keys(userPlatforms).map((userPlatformId) => (
+                  <CardMedia
+                    key={userPlatforms[userPlatformId].name}
+                    component="img"
+                    onClick={() => {
+                      setUserPlatforms({
+                        ...userPlatforms,
+                        [userPlatformId]: {
+                          ...userPlatforms[userPlatformId],
+                          selected: !userPlatforms[userPlatformId].selected,
+                        },
+                      });
+                    }}
+                    sx={{
+                      width: "100%",
+                      borderRadius: "15px",
+                      boxShadow: userPlatforms[userPlatformId].selected
+                        ? "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)"
+                        : "",
+                      opacity: userPlatforms[userPlatformId].selected ? 1 : 0.1,
+                    }}
+                    image={userPlatforms[userPlatformId].appIcon.src}
+                    alt={userPlatforms[userPlatformId].name}
+                  ></CardMedia>
+                ))}
+              </Box>
+            </Box>
+          </Box>
+        </ConfigSection>
+        <ConfigSection
+          title={"¿Como quieres ver los posters de las peliculas?"}
+        >
+          <Box
+            sx={{
+              display: "grid",
+              gridTemplateColumns: "auto auto",
+              columnGap: "30px",
+            }}
+          >
+            {Object.keys(userPosters).map((userPosterId) => (
+              <Box
+                key={userPosters[userPosterId].name}
+                sx={{ opacity: userPosters[userPosterId].selected ? 1 : 0.1 }}
+                onClick={() => {
+                  let userPostersCopy = {};
+                  const userPostersCopyIds = Object.keys(userPostersCopy);
+                  userPostersCopyIds.forEach((userPostersCopyId) => {
+                    userPostersCopy.push({
+                      name: userPostersCopyIds[userPostersCopyId].name,
+                      component:
+                        userPostersCopyIds[userPostersCopyId].component,
+                      selected: false,
+                    });
+                  });
+                  setUserPosters({
+                    ...userPostersCopy,
+                    [userPosterId]: {
+                      ...userPostersCopy[userPosterId],
+                      selected: true,
+                    },
+                  });
+                }}
+              >
+                {userPosters[userPosterId].component({
+                  name: MOVIE_EXAMPLE.name,
+                  image: MOVIE_EXAMPLE.image,
+                })}
+              </Box>
+            ))}
+          </Box>
+        </ConfigSection>
+
+        <ConfigSection
+          title={"¿Cual es tu motor de puntuación favorito?"}
+        ></ConfigSection>
       </Box>
     </Box>
   );
