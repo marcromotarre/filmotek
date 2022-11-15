@@ -5,15 +5,20 @@ import { useEffect, useState } from "react";
 import { Inter } from "@next/font/google";
 import ImdbBasicChip from "../../src/components/chips/imdb-basic-chip";
 import FilmaffinityBasicChip from "../../src/components/chips/filmaffinity-basic-chip";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 const MovieGallery = () => {
   const [movies, setMovies] = useState([]);
+  const [page, setPage] = useState(0);
+  const [count, setCount] = useState(500);
+  const [hasMore, setHasMore] = useState(true);
   const [token, setToken] = useState("");
   useEffect(() => {
-    loadMovies();
+    fetchData();
   }, []);
 
-  const loadMovies = async () => {
+  const fetchData = async (page = 0) => {
+    setPage(page);
     /*    const { data: _token } = await axios.post(
       `${process.env.FILMOTEK_API}/signin`,
       {
@@ -31,26 +36,49 @@ const MovieGallery = () => {
       }
     );
     console.log(_movies);*/
-    const _movies = await axios(`${process.env.FILMOTEK_API}/movie-gallery`);
-    setMovies(_movies.data.data);
+    /*const _movies = await axios(`${process.env.FILMOTEK_API}/movie-gallery/`, {
+      params: { page },
+    });*/
+    const _movies = await axios(`https://movies-api-lxas.onrender.com/movie-gallery/`, {
+      params: { page },
+    });
+    
+    setCount(_movies.data.count);
+
+    setMovies([...movies, ..._movies.data.data]);
+    if (_movies.data.count <= [...movies, ..._movies.data.data].length) {
+      setHasMore(false);
+    }
   };
+
   return (
     <Box
       sx={{
         backgroundColor: "#3d3d3d",
         display: "flex",
         justifyContent: "center",
+        alignItems: "center",
         width: "100%",
+        paddingLeft: "20px",
+        paddingRight: "20px",
+        paddingTop: "30px",
       }}
     >
-      <Box
-        sx={{
+      <InfiniteScroll
+        style={{
           display: "grid",
           gridTemplateColumns: "calc(50% - 10px) calc(50% - 10px)",
           columnGap: "20px",
           rowGap: "20px",
-          width: "calc(100% - 40px)",
+          width: "100%",
+          overflowY: "hidden",
         }}
+        dataLength={movies.length} //This is important field to render the next data
+        next={() => {
+          console.log("fetch data", page), fetchData(page + 1);
+        }}
+        hasMore={true}
+        loader={<h4>Loading...</h4>}
       >
         {movies.map((movie) => (
           <Box key={movie.id} sx={{ position: "relative" }}>
@@ -76,7 +104,7 @@ const MovieGallery = () => {
             />*/}
           </Box>
         ))}
-      </Box>
+      </InfiniteScroll>
     </Box>
   );
 };
