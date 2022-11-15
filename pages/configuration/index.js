@@ -59,29 +59,29 @@ const MovieGallery = () => {
                   width: "90%",
                 }}
               >
-                {Object.keys(userPlatforms).map((userPlatformId) => (
+                {userPlatforms.map((userPlatform, index) => (
                   <CardMedia
-                    key={userPlatforms[userPlatformId].name}
+                    key={userPlatform.name}
                     component="img"
                     onClick={() => {
-                      setUserPlatforms({
-                        ...userPlatforms,
-                        [userPlatformId]: {
-                          ...userPlatforms[userPlatformId],
-                          selected: !userPlatforms[userPlatformId].selected,
-                        },
-                      });
+                      setUserPlatforms([
+                        ...userPlatforms.map((uP, uPIndex) => ({
+                          ...uP,
+                          selected:
+                            uPIndex === index ? !uP.selected : uP.selected,
+                        })),
+                      ]);
                     }}
                     sx={{
                       width: "100%",
                       borderRadius: "15px",
-                      boxShadow: userPlatforms[userPlatformId].selected
+                      boxShadow: userPlatform.selected
                         ? "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)"
                         : "",
-                      opacity: userPlatforms[userPlatformId].selected ? 1 : 0.1,
+                      opacity: userPlatform.selected ? 1 : 0.1,
                     }}
-                    image={userPlatforms[userPlatformId].appIcon.src}
-                    alt={userPlatforms[userPlatformId].name}
+                    image={userPlatform.appIcon.src}
+                    alt={userPlatform.name}
                   ></CardMedia>
                 ))}
               </Box>
@@ -123,7 +123,7 @@ const MovieGallery = () => {
         <ConfigSection
           title={"¿Cual es tu motor de puntuación favorito?"}
         ></ConfigSection>
-        <Box sx={{paddingBottom: "400px"}}></Box>
+        <Box sx={{ paddingBottom: "400px" }}></Box>
       </Box>
     </Box>
   );
