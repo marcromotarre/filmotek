@@ -1,7 +1,7 @@
 import BorderPoster from "../components/posters/border-poster";
 import RoundedPoster from "../components/posters/rounded-poster";
 
-let POSTERS = {
+/*let POSTERS = {
   RECTANGULAR_WITH_WHITE_BORDER: {
     name: "RECTANGULAR_WITH_WHITE_BORDER",
     component: ({name, image}) => <BorderPoster name={name} image={image}></BorderPoster>,
@@ -12,7 +12,23 @@ let POSTERS = {
     component: ({name, image}) => <RoundedPoster name={name} image={image}></RoundedPoster>,
     selected: false,
   },
-};
+};*/
 
+const POSTERS = [
+  {
+    name: "RECTANGULAR_WITH_WHITE_BORDER",
+    component: ({ name, image }) => (
+      <BorderPoster name={name} image={image}></BorderPoster>
+    ),
+    selected: true,
+  },
+  {
+    name: "ROUNDED",
+    component: ({ name, image }) => (
+      <RoundedPoster name={name} image={image}></RoundedPoster>
+    ),
+    selected: false,
+  },
+];
 
-export default POSTERS
+export default POSTERS;

@@ -98,31 +98,20 @@ const MovieGallery = () => {
               columnGap: "30px",
             }}
           >
-            {Object.keys(userPosters).map((userPosterId) => (
+            {userPosters.map((userPoster, posterIndex) => (
               <Box
-                key={userPosters[userPosterId].name}
-                sx={{ opacity: userPosters[userPosterId].selected ? 1 : 0.1 }}
+                key={userPoster.name}
+                sx={{ opacity: userPoster.selected ? 1 : 0.1 }}
                 onClick={() => {
-                  let userPostersCopy = {};
-                  const userPostersCopyIds = Object.keys(userPostersCopy);
-                  userPostersCopyIds.forEach((userPostersCopyId) => {
-                    userPostersCopy.push({
-                      name: userPostersCopyIds[userPostersCopyId].name,
-                      component:
-                        userPostersCopyIds[userPostersCopyId].component,
-                      selected: false,
-                    });
-                  });
-                  setUserPosters({
-                    ...userPostersCopy,
-                    [userPosterId]: {
-                      ...userPostersCopy[userPosterId],
-                      selected: true,
-                    },
-                  });
+                  setUserPosters([
+                    ...userPosters.map((uP, uPindex) => ({
+                      ...uP,
+                      selected: posterIndex === uPindex,
+                    })),
+                  ]);
                 }}
               >
-                {userPosters[userPosterId].component({
+                {userPoster.component({
                   name: MOVIE_EXAMPLE.name,
                   image: MOVIE_EXAMPLE.image,
                 })}
@@ -134,6 +123,7 @@ const MovieGallery = () => {
         <ConfigSection
           title={"¿Cual es tu motor de puntuación favorito?"}
         ></ConfigSection>
+        <Box sx={{paddingBottom: "400px"}}></Box>
       </Box>
     </Box>
   );
