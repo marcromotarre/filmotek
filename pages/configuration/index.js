@@ -13,8 +13,8 @@ import BorderPoster from "../../src/components/posters/border-poster";
 import ConfigSection from "../../src/components/sections/config-section";
 import ConfigSectionSlider from "../../src/components/sections/config-section-slider";
 import FilmaffinitySlider from "../../src/components/sliders/filmaffinity-slider";
-import { MOVIE_EXAMPLE } from "../../src/data.js/movie-example";
-import { RANKING_PLATFORMS_SLIDERS } from "../../src/data.js/ranking-platforms";
+import { MOVIE_EXAMPLE } from "../../src/data/movie-example";
+import { RANKING_PLATFORMS_SLIDERS } from "../../src/data/ranking-platforms";
 import {
   userPlatformsState,
   userPostersState,
