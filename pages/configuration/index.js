@@ -13,6 +13,7 @@ import BorderPoster from "../../src/components/posters/border-poster";
 import ConfigSection from "../../src/components/sections/config-section";
 import ConfigSectionSlider from "../../src/components/sections/config-section-slider";
 import FilmaffinitySlider from "../../src/components/sliders/filmaffinity-slider";
+import CHIPS from "../../src/data/chips";
 import { MOVIE_EXAMPLE } from "../../src/data/movie-example";
 import { RANKING_PLATFORMS_SLIDERS } from "../../src/data/ranking-platforms";
 import {
@@ -185,7 +186,7 @@ const MovieGallery = () => {
         {RANKING_PLATFORMS_SLIDERS[
           userRankingPlatforms.find((uRP) => uRP.selected === true).name
         ].map((slider, index) => {
-          return <ConfigSectionSlider key={index} slider={slider} />
+          return <ConfigSectionSlider key={index} slider={slider} />;
         })}
         <ConfigSection
           title={"Configura tu chip"}
@@ -194,31 +195,37 @@ const MovieGallery = () => {
       </Box>
       <Box
         sx={{
-          gridColumn: "full",
-          display: "grid",
-          gridTemplateColumns: "inherit",
-          paddingBlock: "var(--space-md)",
-          overflowX: "scroll",
-          overscrollBehaviorX: "contain",
-          scrollSnapType: "x proximity",
-          scrollbarWidth: "none",
+          display: "flex",
+          width: "100%",
         }}
       >
         <Box
           sx={{
             display: "flex",
-            flexWrap: "nowrap",
-            overflowX: "auto",
+            width: "3000px",
+            overflowX: "scroll",
           }}
         >
-          {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((a) => (
-            <BorderPoster styles={{width: "40%", marginLeft: "20px"}} key={a} image={MOVIE_EXAMPLE.image} name={MOVIE_EXAMPLE.name} />
+          {CHIPS.map((chip) => (
+            <Box key={chip.key}>
+              {chip.component({
+                styles: { width: "40vw", height: "auto", marginLeft: "10px" },
+                poster: userPosters.find((x) => x.selected === true),
+                image: MOVIE_EXAMPLE.image,
+                name: MOVIE_EXAMPLE.name,
+                rating: 8,
+                votes: 1300,
+              })}
+            </Box>
           ))}
         </Box>
       </Box>
+
       <Box sx={{ height: "40px" }}></Box>
     </Box>
   );
 };
 
 export default MovieGallery;
+
+//  <BorderPoster  image={MOVIE_EXAMPLE.image} name={MOVIE_EXAMPLE.name} />

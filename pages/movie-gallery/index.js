@@ -6,6 +6,9 @@ import { Inter } from "@next/font/google";
 import ImdbBasicChip from "../../src/components/chips/imdb-basic-chip";
 import FilmaffinityBasicChip from "../../src/components/chips/filmaffinity-basic-chip";
 import InfiniteScroll from "react-infinite-scroll-component";
+import CHIPS from "../../src/data/chips";
+import { userPostersState } from "../../src/states/user-state";
+import { useRecoilState } from "recoil";
 
 const MovieGallery = () => {
   const [movies, setMovies] = useState([]);
@@ -13,6 +16,9 @@ const MovieGallery = () => {
   const [count, setCount] = useState(500);
   const [hasMore, setHasMore] = useState(true);
   const [token, setToken] = useState("");
+
+  const [userPosters, setUserPosters] = useRecoilState(userPostersState);
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -39,10 +45,13 @@ const MovieGallery = () => {
     /*const _movies = await axios(`${process.env.FILMOTEK_API}/movie-gallery/`, {
       params: { page },
     });*/
-    const _movies = await axios(`https://movies-api-lxas.onrender.com/movie-gallery/`, {
-      params: { page },
-    });
-    
+    const _movies = await axios(
+      `https://movies-api-lxas.onrender.com/movie-gallery/`,
+      {
+        params: { page },
+      }
+    );
+
     setCount(_movies.data.count);
 
     setMovies([...movies, ..._movies.data.data]);
@@ -68,8 +77,6 @@ const MovieGallery = () => {
         style={{
           display: "grid",
           gridTemplateColumns: "calc(50% - 10px) calc(50% - 10px)",
-          columnGap: "20px",
-          rowGap: "20px",
           width: "100%",
           overflowY: "hidden",
         }}
@@ -81,27 +88,15 @@ const MovieGallery = () => {
         loader={<h4>Loading...</h4>}
       >
         {movies.map((movie) => (
-          <Box key={movie.id} sx={{ position: "relative" }}>
-            <CardMedia
-              component="img"
-              sx={{ width: "100%", border: "1px solid white" }}
-              image={`https://www.themoviedb.org/t/p/w600_and_h900_bestv2/${movie.image}`}
-              alt={movie.name}
-            />
-            <FilmaffinityBasicChip
-              rating={
-                movie.platforms.filmaffinityMovie.rating % 1 != 0
-                  ? movie.platforms.filmaffinityMovie.rating
-                  : `${movie.platforms.filmaffinityMovie.rating}.0`
-              }
-            />
-            {/*<ImdbBasicChip
-              rating={
-                movie.platforms.imdbMovie.rating % 1 != 0
-                  ? movie.platforms.imdbMovie.rating
-                  : `${movie.platforms.imdbMovie.rating}.0`
-              }
-            />*/}
+          <Box key={movie.id}>
+            {CHIPS[1].component({
+              styles: { width: "auto", height: "auto", marginLeft: "10px" },
+              poster: userPosters.find((x) => x.selected === true),
+              image: movie.image,
+              name: movie.name,
+              rating: 8,
+              votes: 1300,
+            })}
           </Box>
         ))}
       </InfiniteScroll>

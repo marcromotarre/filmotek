@@ -15,9 +15,10 @@ const FilmaffinityBasicChip = ({ rating }) => {
         height: "35px",
         position: "absolute",
         left: "calc(50% - 35px)",
-        bottom: "-5px",
+        bottom: "0px",
         display: "flex",
         alignItems: "center",
+        zIndex: 20,
       }}
     >
       <Box
