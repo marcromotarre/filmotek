@@ -4,9 +4,11 @@ export const MOVIE_EXAMPLE = {
   platforms: {
     imdbMovie: {
       rating: 8.5,
+      votes: 851000
     },
     filmaffinityMovie: {
       rating: 7.8,
+      votes: 63886
     },
   },
 };

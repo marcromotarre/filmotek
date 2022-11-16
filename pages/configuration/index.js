@@ -9,6 +9,7 @@ import {
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
+import BorderPoster from "../../src/components/posters/border-poster";
 import ConfigSection from "../../src/components/sections/config-section";
 import ConfigSectionSlider from "../../src/components/sections/config-section-slider";
 import FilmaffinitySlider from "../../src/components/sliders/filmaffinity-slider";
@@ -29,8 +30,7 @@ const MovieGallery = () => {
   );
   const [userPosters, setUserPosters] = useRecoilState(userPostersState);
 
-
-  console.log(userRankingPlatforms.find((uRP) => uRP.selected === true).name)
+  console.log(userRankingPlatforms.find((uRP) => uRP.selected === true).name);
   return (
     <Box
       sx={{
@@ -38,6 +38,7 @@ const MovieGallery = () => {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
+        flexDirection: "column",
       }}
     >
       <Box
@@ -183,12 +184,39 @@ const MovieGallery = () => {
         </ConfigSection>
         {RANKING_PLATFORMS_SLIDERS[
           userRankingPlatforms.find((uRP) => uRP.selected === true).name
-        ].map((slider, index) => (
-          <ConfigSectionSlider key={index} slider={slider} />
-        ))}
-        <Button variant="outlined">GO TO MAIN</Button>
-        <Box sx={{ paddingBottom: "400px" }}></Box>
+        ].map((slider, index) => {
+          return <ConfigSectionSlider key={index} slider={slider} />
+        })}
+        <ConfigSection
+          title={"Configura tu chip"}
+          subtitle={"¿Que es el chip?"}
+        />
       </Box>
+      <Box
+        sx={{
+          gridColumn: "full",
+          display: "grid",
+          gridTemplateColumns: "inherit",
+          paddingBlock: "var(--space-md)",
+          overflowX: "scroll",
+          overscrollBehaviorX: "contain",
+          scrollSnapType: "x proximity",
+          scrollbarWidth: "none",
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            flexWrap: "nowrap",
+            overflowX: "auto",
+          }}
+        >
+          {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((a) => (
+            <BorderPoster styles={{width: "40%", marginLeft: "20px"}} key={a} image={MOVIE_EXAMPLE.image} name={MOVIE_EXAMPLE.name} />
+          ))}
+        </Box>
+      </Box>
+      <Box sx={{ height: "40px" }}></Box>
     </Box>
   );
 };
