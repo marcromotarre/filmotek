@@ -5,8 +5,8 @@ import Image from "next/image";
 import IMDB_CHIP_ICON from "../../images/ranking-platforms/imdb/imdb-chip-icon.png";
 
 const inter = Inter({
-    weight: "900",
-  });
+  weight: "900",
+});
 const ImdbBasicChip = ({ rating }) => {
    
   return (

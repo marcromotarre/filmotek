@@ -8,12 +8,26 @@ import IMDB_CHIP_ICON from "../../images/ranking-platforms/imdb/imdb-chip-icon.p
 const ConfigSection = ({ title, subtitle, children }) => {
   return (
     <Box sx={{ display: "grid", gridTemplateColumns: "auto", rowGap: "20px" }}>
-      <Box sx={{ display: "grid", gridTemplateColumns: "auto", rowGap: "10px" }}>
-        <Typography className={inter900.className} variant="h6">{title}</Typography>
-        {subtitle && <Typography className={inter100.className} variant="body2">{subtitle}</Typography>}
+      <Box
+        sx={{ display: "grid", gridTemplateColumns: "auto", rowGap: "10px" }}
+      >
+        {title && (
+          <Typography className={inter900.className} variant="h6">
+            {title}
+          </Typography>
+        )}
+        {subtitle && (
+          <Typography className={inter100.className} variant="body2">
+            {subtitle}
+          </Typography>
+        )}
       </Box>
 
-      {children}
+      <Box
+        sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}
+      >
+        <Box sx={{ width: "calc(100% - 20px)" }}>{children}</Box>
+      </Box>
     </Box>
   );
 };
