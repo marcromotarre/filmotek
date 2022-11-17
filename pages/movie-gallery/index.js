@@ -6,7 +6,7 @@ import { Inter } from "@next/font/google";
 import ImdbBasicChip from "../../src/components/chips/imdb-basic-chip";
 import FilmaffinityBasicChip from "../../src/components/chips/filmaffinity-basic-chip";
 import InfiniteScroll from "react-infinite-scroll-component";
-import CHIPS from "../../src/data/chips";
+import CHIPS, { getChipsByTag } from "../../src/data/chips";
 import {
   BASE_URL,
   jwtState,
@@ -38,6 +38,8 @@ const MovieGallery = () => {
       fetchData();
     }
   }, [userPoster]);
+
+  console.log(userRankingPlatforms.ranking_platform)
 
   const fetchData = async (page = 0) => {
     setPage(page);
@@ -99,7 +101,7 @@ const MovieGallery = () => {
               router.push(`movie/${movie.id}`);
             }}
           >
-            {CHIPS.find((chip) => chip.name === userChip).component({
+            {getChipsByTag(userRankingPlatforms.ranking_platform).find((chip) => chip.name === userChip).component({
               styles: { width: "auto", height: "auto" },
               poster: POSTERS.find((poster) => poster.name === userPoster),
               image: movie.image,
