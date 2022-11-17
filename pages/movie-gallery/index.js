@@ -46,9 +46,7 @@ const MovieGallery = () => {
       {
         params: {
           page,
-          useFilmaffinity:
-            userRankingPlatforms.ranking_platform === "FILMAFFINITY",
-          useIMDB: userRankingPlatforms.ranking_platform === "IMDB",
+          ranking_platform: userRankingPlatforms.ranking_platform,
         },
       },
       {
