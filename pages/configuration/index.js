@@ -22,6 +22,7 @@ import RANKING_PLATFORMS, {
   RANKING_PLATFORMS_SLIDERS,
 } from "../../src/data/ranking-platforms";
 import {
+  BASE_URL,
   jwtState,
   userChipState,
   userPlatformsState,
@@ -29,7 +30,7 @@ import {
   userRankingPlatformsState,
 } from "../../src/states/user-state";
 
-const USER_PARAMS_URL = `http://localhost:3005/api/user-params`;
+const USER_PARAMS_URL = `${BASE_URL}api/user-params`;
 
 const Configuration = () => {
   useEffect(() => {}, []);

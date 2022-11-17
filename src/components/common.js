@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import {
+    BASE_URL,
   jwtState,
   userChipState,
   userPlatformsState,
@@ -20,7 +21,7 @@ export default function Common() {
   }, []);
 
   const getIn = async () => {
-    const { data: token } = await axios.post(`http://localhost:3005/signin`, {
+    const { data: token } = await axios.post(`${BASE_URL}signin`, {
       email: "marcromotarre@gmail.com",
       password: "admin",
     });
@@ -30,7 +31,7 @@ export default function Common() {
     // get user config
     const {
       data: { data: userParams },
-    } = await axios(`http://localhost:3005/api/user-params`, {
+    } = await axios(`${BASE_URL}api/user-params`, {
       headers: {
         Authorization: `Bearer ${token.data}`,
       },

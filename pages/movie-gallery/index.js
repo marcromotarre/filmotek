@@ -7,8 +7,15 @@ import ImdbBasicChip from "../../src/components/chips/imdb-basic-chip";
 import FilmaffinityBasicChip from "../../src/components/chips/filmaffinity-basic-chip";
 import InfiniteScroll from "react-infinite-scroll-component";
 import CHIPS from "../../src/data/chips";
-import { userPosterState } from "../../src/states/user-state";
-import { useRecoilState } from "recoil";
+import {
+  BASE_URL,
+  jwtState,
+  userChipState,
+  userPosterState,
+  userRankingPlatformsState,
+} from "../../src/states/user-state";
+import { useRecoilState, useRecoilValue } from "recoil";
+import POSTERS from "../../src/data/posters";
 
 const MovieGallery = () => {
   const [movies, setMovies] = useState([]);
@@ -17,38 +24,32 @@ const MovieGallery = () => {
   const [hasMore, setHasMore] = useState(true);
   const [token, setToken] = useState("");
 
-  const [userPosters, setUserPosters] = useRecoilState(userPosterState);
-
+  const userPoster = useRecoilValue(userPosterState);
+  const jwt = useRecoilValue(jwtState);
+  const userChip = useRecoilValue(userChipState);
+  const userRankingPlatforms = useRecoilValue(userRankingPlatformsState);
   useEffect(() => {
-    fetchData();
-  }, []);
+    if (userPoster) {
+      fetchData();
+    }
+  }, [userPoster]);
 
   const fetchData = async (page = 0) => {
     setPage(page);
-    /*    const { data: _token } = await axios.post(
-      `${process.env.FILMOTEK_API}/signin`,
-      {
-        email: process.env.FILMOTEK_USER,
-        password: process.env.FILMOTEK_PASSWORD,
-      }
-    );
-    setToken(_token);
     const _movies = await axios(
-      `${process.env.FILMOTEK_API}/api/movie-gallery`,
+      `${BASE_URL}movie-gallery/`,
+      {
+        params: {
+          page,
+          useFilmaffinity:
+            userRankingPlatforms.ranking_platform === "FILMAFFINITY",
+          useIMDB: userRankingPlatforms.ranking_platform === "IMDB",
+        },
+      },
       {
         headers: {
-          Authorization: `Bearer ${_token}`,
+          Authorization: `Bearer ${jwt}`,
         },
-      }
-    );
-    console.log(_movies);*/
-    /*const _movies = await axios(`${process.env.FILMOTEK_API}/movie-gallery/`, {
-      params: { page },
-    });*/
-    const _movies = await axios(
-      `https://movies-api-lxas.onrender.com/movie-gallery/`,
-      {
-        params: { page },
       }
     );
 
@@ -91,13 +92,13 @@ const MovieGallery = () => {
       >
         {movies.map((movie) => (
           <Box key={movie.id}>
-            {CHIPS[1].component({
+            {CHIPS.find((chip) => chip.name === userChip).component({
               styles: { width: "auto", height: "auto" },
-              poster: userPosters.find((x) => x.selected === true),
+              poster: POSTERS.find((poster) => poster.name === userPoster),
               image: movie.image,
               name: movie.name,
-              rating: 8,
-              votes: 1300,
+              rating: movie.platforms[Object.keys(movie.platforms)[0]].rating,
+              votes: movie.platforms[Object.keys(movie.platforms)[0]].votes,
             })}
           </Box>
         ))}

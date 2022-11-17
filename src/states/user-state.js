@@ -49,3 +49,7 @@ export const jwtState = atom({
   key: "jwt",
   default: null,
 });
+
+
+//export const BASE_URL = "http://localhost:3005/"
+export const BASE_URL = "https://movies-api-lxas.onrender.com"
