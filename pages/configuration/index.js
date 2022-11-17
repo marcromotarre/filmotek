@@ -15,7 +15,7 @@ import BorderPoster from "../../src/components/posters/border-poster";
 import ConfigSection from "../../src/components/sections/config-section";
 import ConfigSectionSlider from "../../src/components/sections/config-section-slider";
 import FilmaffinitySlider from "../../src/components/sliders/filmaffinity-slider";
-import CHIPS from "../../src/data/chips";
+import CHIPS, { getChipsByTag } from "../../src/data/chips";
 import { MOVIE_EXAMPLE } from "../../src/data/movie-example";
 import PLATFORMS from "../../src/data/platforms";
 import POSTERS from "../../src/data/posters";
@@ -211,6 +211,22 @@ const Configuration = () => {
                     key={rankingPlantform.name}
                     component="img"
                     onClick={() => {
+                      const isChipForNewPlatform = getChipsByTag(rankingPlantform.name).find(chip => chip.name === userChip)
+                      if(!isChipForNewPlatform) {
+                        axios.post(
+                          USER_PARAMS_URL,
+                          {
+                            chip: "NO_CHIP",
+                          },
+                          {
+                            headers: {
+                              Authorization: `Bearer ${jwt}`,
+                            },
+                          }
+                        );
+                        setUserChip("NO_CHIP");
+                      }
+                      
                       axios.post(
                         USER_PARAMS_URL,
                         {
@@ -282,7 +298,7 @@ const Configuration = () => {
           }}
         >
           {userPoster &&
-            CHIPS.map((chip) => (
+            getChipsByTag(userRankingPlatforms.ranking_platform).map((chip) => (
               <Box
                 key={chip.key}
                 sx={{ opacity: userChip === chip.name ? 1 : 0.1 }}

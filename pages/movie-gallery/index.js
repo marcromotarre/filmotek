@@ -65,7 +65,6 @@ const MovieGallery = () => {
       setHasMore(false);
     }
   };
-
   return (
     <Box
       sx={{
@@ -96,7 +95,12 @@ const MovieGallery = () => {
         loader={<h4>Loading...</h4>}
       >
         {movies.map((movie) => (
-          <Box key={movie.id}>
+          <Box
+            key={movie.id}
+            onClick={() => {
+              router.push(`movie/${movie.id}`);
+            }}
+          >
             {CHIPS.find((chip) => chip.name === userChip).component({
               styles: { width: "auto", height: "auto" },
               poster: POSTERS.find((poster) => poster.name === userPoster),
@@ -118,7 +122,7 @@ const MovieGallery = () => {
           width: "100px",
           height: "100px",
           bottom: "10px",
-          zIndex: "100"
+          zIndex: "100",
         }}
         image={FILMOTEK_IMAGE_ICON.src}
         alt={"filmotek"}

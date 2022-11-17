@@ -5,6 +5,10 @@ import ImdbBasicChip from "../components/chips/imdb-basic-chip";
 import BorderPoster from "../components/posters/border-poster";
 import RoundedPoster from "../components/posters/rounded-poster";
 
+
+export const getChipsByTag = (tag) => {
+ return CHIPS.filter(chip => chip.tags.includes(tag))
+}
 const CHIPS = [
  
   {
@@ -17,11 +21,11 @@ const CHIPS = [
       );
     },
     selected: false,
-    tags: ["FILMAFFINITY","IMDB","ROTTEN"]
+    tags: ["FILMAFFINITY","IMDB","ROTTEN_TOMATOES"]
   },
  
   {
-    name: "FILMAFFINITY_BASIC_CHIP",
+    name: "BASIC_CHIP",
     component: ({ poster, styles, name, image, rating, votes }) => {
       return (
         <Box sx={{ ...styles, position: "relative" }}>
@@ -36,7 +40,7 @@ const CHIPS = [
     tags: ["FILMAFFINITY"]
   },
   {
-    name: "IMDB_BASIC_CHIP",
+    name: "BASIC_CHIP",
     component: ({ poster, styles, name, image, rating, votes }) => {
       return (
         <Box sx={{ ...styles, position: "relative" }}>
