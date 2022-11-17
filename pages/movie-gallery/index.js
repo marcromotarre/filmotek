@@ -17,7 +17,12 @@ import {
 import { useRecoilState, useRecoilValue } from "recoil";
 import POSTERS from "../../src/data/posters";
 
+import FILMOTEK_IMAGE_ICON from "../../src/images/filmotek/filmotek-logo-main-icon.png";
+import { useRouter } from "next/router";
+
 const MovieGallery = () => {
+  const router = useRouter();
+
   const [movies, setMovies] = useState([]);
   const [page, setPage] = useState(0);
   const [count, setCount] = useState(500);
@@ -103,6 +108,21 @@ const MovieGallery = () => {
           </Box>
         ))}
       </InfiniteScroll>
+      <CardMedia
+        onClick={() => {
+          router.push("configuration");
+        }}
+        component="img"
+        sx={{
+          position: "fixed",
+          width: "100px",
+          height: "100px",
+          bottom: "10px",
+          zIndex: "100"
+        }}
+        image={FILMOTEK_IMAGE_ICON.src}
+        alt={"filmotek"}
+      />
     </Box>
   );
 };

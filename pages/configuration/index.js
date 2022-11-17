@@ -8,6 +8,7 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import BorderPoster from "../../src/components/posters/border-poster";
@@ -29,11 +30,13 @@ import {
   userPosterState,
   userRankingPlatformsState,
 } from "../../src/states/user-state";
+import FILMOTEK_IMAGE_ICON from "../../src/images/filmotek/filmotek-logo-main-icon.png";
 
 const USER_PARAMS_URL = `${BASE_URL}api/user-params`;
 
 const Configuration = () => {
   useEffect(() => {}, []);
+  const router = useRouter();
 
   const [userPlatforms, setUserPlatforms] = useRecoilState(userPlatformsState);
   const [userRankingPlatforms, setUserRankingPlatforms] = useRecoilState(
@@ -311,7 +314,21 @@ const Configuration = () => {
         </Box>
       </Box>
 
-      <Box sx={{ height: "40px" }}></Box>
+      <CardMedia
+        onClick={() => {
+          router.push("movie-gallery");
+        }}
+        component="img"
+        sx={{
+          position: "fixed",
+          width: "100px",
+          height: "100px",
+          bottom: "10px",
+          zIndex: "100"
+        }}
+        image={FILMOTEK_IMAGE_ICON.src}
+        alt={"filmotek"}
+      />
     </Box>
   );
 };
