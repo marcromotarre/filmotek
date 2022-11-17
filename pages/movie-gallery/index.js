@@ -7,7 +7,7 @@ import ImdbBasicChip from "../../src/components/chips/imdb-basic-chip";
 import FilmaffinityBasicChip from "../../src/components/chips/filmaffinity-basic-chip";
 import InfiniteScroll from "react-infinite-scroll-component";
 import CHIPS from "../../src/data/chips";
-import { userPostersState } from "../../src/states/user-state";
+import { userPosterState } from "../../src/states/user-state";
 import { useRecoilState } from "recoil";
 
 const MovieGallery = () => {
@@ -17,7 +17,7 @@ const MovieGallery = () => {
   const [hasMore, setHasMore] = useState(true);
   const [token, setToken] = useState("");
 
-  const [userPosters, setUserPosters] = useRecoilState(userPostersState);
+  const [userPosters, setUserPosters] = useRecoilState(userPosterState);
 
   useEffect(() => {
     fetchData();
@@ -77,6 +77,8 @@ const MovieGallery = () => {
         style={{
           display: "grid",
           gridTemplateColumns: "calc(50% - 10px) calc(50% - 10px)",
+          columnGap: "20px",
+          rowGap: "20px",
           width: "100%",
           overflowY: "hidden",
         }}
@@ -90,7 +92,7 @@ const MovieGallery = () => {
         {movies.map((movie) => (
           <Box key={movie.id}>
             {CHIPS[1].component({
-              styles: { width: "auto", height: "auto", marginLeft: "10px" },
+              styles: { width: "auto", height: "auto" },
               poster: userPosters.find((x) => x.selected === true),
               image: movie.image,
               name: movie.name,

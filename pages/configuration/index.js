@@ -6,32 +6,42 @@ import {
   Slider,
   Typography,
 } from "@mui/material";
+import axios from "axios";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import BorderPoster from "../../src/components/posters/border-poster";
 import ConfigSection from "../../src/components/sections/config-section";
 import ConfigSectionSlider from "../../src/components/sections/config-section-slider";
 import FilmaffinitySlider from "../../src/components/sliders/filmaffinity-slider";
 import CHIPS from "../../src/data/chips";
 import { MOVIE_EXAMPLE } from "../../src/data/movie-example";
-import { RANKING_PLATFORMS_SLIDERS } from "../../src/data/ranking-platforms";
+import PLATFORMS from "../../src/data/platforms";
+import POSTERS from "../../src/data/posters";
+import RANKING_PLATFORMS, {
+  RANKING_PLATFORMS_SLIDERS,
+} from "../../src/data/ranking-platforms";
 import {
+  jwtState,
+  userChipState,
   userPlatformsState,
-  userPostersState,
+  userPosterState,
   userRankingPlatformsState,
 } from "../../src/states/user-state";
 
-const MovieGallery = () => {
+const USER_PARAMS_URL = `http://localhost:3005/api/user-params`;
+
+const Configuration = () => {
   useEffect(() => {}, []);
 
   const [userPlatforms, setUserPlatforms] = useRecoilState(userPlatformsState);
   const [userRankingPlatforms, setUserRankingPlatforms] = useRecoilState(
     userRankingPlatformsState
   );
-  const [userPosters, setUserPosters] = useRecoilState(userPostersState);
-
-  console.log(userRankingPlatforms.find((uRP) => uRP.selected === true).name);
+  const [userPoster, setUserPoster] = useRecoilState(userPosterState);
+  const jwt = useRecoilValue(jwtState);
+  const [userChip, setUserChip] = useRecoilState(userChipState);
+  console.log(userPoster);
   return (
     <Box
       sx={{
@@ -75,29 +85,60 @@ const MovieGallery = () => {
                   width: "95%",
                 }}
               >
-                {userPlatforms.map((userPlatform, index) => (
+                {PLATFORMS.map((platform, index) => (
                   <CardMedia
-                    key={userPlatform.name}
+                    key={platform.name}
                     component="img"
                     onClick={() => {
-                      setUserPlatforms([
-                        ...userPlatforms.map((uP, uPIndex) => ({
-                          ...uP,
-                          selected:
-                            uPIndex === index ? !uP.selected : uP.selected,
-                        })),
-                      ]);
+                      axios.post(
+                        USER_PARAMS_URL,
+                        {
+                          hasNetflix:
+                            platform.name === "NETFLIX"
+                              ? !userPlatforms.NETFLIX
+                              : userPlatforms.NETFLIX,
+                          hasHBO:
+                            platform.name === "HBO"
+                              ? !userPlatforms.HBO
+                              : userPlatforms.HBO,
+                          hasAmazonPrimeVideo:
+                            platform.name === "AMAZON_PRIME_VIDEO"
+                              ? !userPlatforms.AMAZON_PRIME_VIDEO
+                              : userPlatforms.AMAZON_PRIME_VIDEO,
+                          hasDisneyPlus:
+                            platform.name === "DISNEY"
+                              ? !userPlatforms.DISNEY
+                              : userPlatforms.DISNEY,
+                          hasAppleTV:
+                            platform.name === "APPLE"
+                              ? !userPlatforms.APPLE
+                              : userPlatforms.APPLE,
+                          hasFilmin:
+                            platform.name === "FILMIN"
+                              ? !userPlatforms.FILMIN
+                              : userPlatforms.FILMIN,
+                        },
+                        {
+                          headers: {
+                            Authorization: `Bearer ${jwt}`,
+                          },
+                        }
+                      );
+                      setUserPlatforms({
+                        ...userPlatforms,
+                        [platform.name]: !userPlatforms[platform.name],
+                      });
                     }}
                     sx={{
                       width: "100%",
                       borderRadius: "15px",
-                      boxShadow: userPlatform.selected
+                      boxShadow: userPlatforms[platform.name]
                         ? "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)"
                         : "",
-                      opacity: userPlatform.selected ? 1 : 0.1,
+                      opacity: userPlatforms[platform.name] ? 1 : 0.1,
                     }}
-                    image={userPlatform.appIcon.src}
-                    alt={userPlatform.name}
+                    image={platform.appIcon.src}
+                    alt={platform.name}
                   ></CardMedia>
                 ))}
               </Box>
@@ -114,20 +155,26 @@ const MovieGallery = () => {
               columnGap: "30px",
             }}
           >
-            {userPosters.map((userPoster, posterIndex) => (
+            {POSTERS.map((poster, posterIndex) => (
               <Box
-                key={userPoster.name}
-                sx={{ opacity: userPoster.selected ? 1 : 0.1 }}
+                key={posterIndex}
+                sx={{ opacity: userPoster === poster.name ? 1 : 0.1 }}
                 onClick={() => {
-                  setUserPosters([
-                    ...userPosters.map((uP, uPindex) => ({
-                      ...uP,
-                      selected: posterIndex === uPindex,
-                    })),
-                  ]);
+                  axios.post(
+                    USER_PARAMS_URL,
+                    {
+                      poster: poster.name,
+                    },
+                    {
+                      headers: {
+                        Authorization: `Bearer ${jwt}`,
+                      },
+                    }
+                  );
+                  setUserPoster(poster.name);
                 }}
               >
-                {userPoster.component({
+                {poster.component({
                   name: MOVIE_EXAMPLE.name,
                   image: MOVIE_EXAMPLE.image,
                 })}
@@ -155,39 +202,61 @@ const MovieGallery = () => {
                   width: "95%",
                 }}
               >
-                {userRankingPlatforms.map((userRankingPlatform, index) => (
+                {RANKING_PLATFORMS.map((rankingPlantform, index) => (
                   <CardMedia
-                    key={userRankingPlatform.name}
+                    key={rankingPlantform.name}
                     component="img"
                     onClick={() => {
-                      setUserRankingPlatforms([
-                        ...userRankingPlatforms.map((uRP, uRPindex) => ({
-                          ...uRP,
-                          selected: index === uRPindex,
-                        })),
-                      ]);
+                      axios.post(
+                        USER_PARAMS_URL,
+                        {
+                          useFilmaffinity:
+                            rankingPlantform.name === "FILMAFFINITY",
+                          useIMDB: rankingPlantform.name === "IMDB",
+                          useRottenTomatoes:
+                            rankingPlantform.name === "ROTTENTOMATOES",
+                        },
+                        {
+                          headers: {
+                            Authorization: `Bearer ${jwt}`,
+                          },
+                        }
+                      );
+
+                      setUserRankingPlatforms({
+                        ...userRankingPlatforms,
+                        ranking_platform: rankingPlantform.name,
+                      });
                     }}
                     sx={{
                       width: "100%",
                       borderRadius: "15px",
-                      boxShadow: userRankingPlatform.selected
-                        ? "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)"
-                        : "",
-                      opacity: userRankingPlatform.selected ? 1 : 0.1,
+                      boxShadow:
+                        userRankingPlatforms.ranking_platform ===
+                        rankingPlantform.name
+                          ? "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)"
+                          : "",
+                      opacity:
+                        userRankingPlatforms.ranking_platform ===
+                        rankingPlantform.name
+                          ? 1
+                          : 0.1,
                     }}
-                    image={userRankingPlatform.appIcon.src}
-                    alt={userRankingPlatform.name}
+                    image={rankingPlantform.appIcon.src}
+                    alt={rankingPlantform.name}
                   ></CardMedia>
                 ))}
               </Box>
             </Box>
           </Box>
         </ConfigSection>
-        {RANKING_PLATFORMS_SLIDERS[
-          userRankingPlatforms.find((uRP) => uRP.selected === true).name
-        ].map((slider, index) => {
-          return <ConfigSectionSlider key={index} slider={slider} />;
-        })}
+        {userRankingPlatforms.ranking_platform &&
+          RANKING_PLATFORMS_SLIDERS({
+            userRankingPlatforms,
+            setUserRankingPlatforms,
+          })[userRankingPlatforms.ranking_platform].map((slider, index) => {
+            return <ConfigSectionSlider key={index} slider={slider} />;
+          })}
         <ConfigSection
           title={"Configura tu chip"}
           subtitle={"¿Que es el chip?"}
@@ -197,6 +266,8 @@ const MovieGallery = () => {
         sx={{
           display: "flex",
           width: "100%",
+          height: "calc(40vw / 0.666 + 20px)",
+          //backgroundColor: "red"
         }}
       >
         <Box
@@ -206,18 +277,36 @@ const MovieGallery = () => {
             overflowX: "scroll",
           }}
         >
-          {CHIPS.map((chip) => (
-            <Box key={chip.key}>
-              {chip.component({
-                styles: { width: "40vw", height: "auto", marginLeft: "10px" },
-                poster: userPosters.find((x) => x.selected === true),
-                image: MOVIE_EXAMPLE.image,
-                name: MOVIE_EXAMPLE.name,
-                rating: 8,
-                votes: 1300,
-              })}
-            </Box>
-          ))}
+          {userPoster &&
+            CHIPS.map((chip) => (
+              <Box
+                key={chip.key}
+                sx={{ opacity: userChip === chip.name ? 1 : 0.1 }}
+                onClick={() => {
+                  axios.post(
+                    USER_PARAMS_URL,
+                    {
+                      chip: chip.name,
+                    },
+                    {
+                      headers: {
+                        Authorization: `Bearer ${jwt}`,
+                      },
+                    }
+                  );
+                  setUserChip(chip.name);
+                }}
+              >
+                {chip.component({
+                  styles: { width: "40vw", height: "auto", marginLeft: "10px" },
+                  poster: POSTERS.find((poster) => poster.name === userPoster),
+                  image: MOVIE_EXAMPLE.image,
+                  name: MOVIE_EXAMPLE.name,
+                  rating: 8,
+                  votes: 1300,
+                })}
+              </Box>
+            ))}
         </Box>
       </Box>
 
@@ -226,6 +315,6 @@ const MovieGallery = () => {
   );
 };
 
-export default MovieGallery;
+export default Configuration;
 
 //  <BorderPoster  image={MOVIE_EXAMPLE.image} name={MOVIE_EXAMPLE.name} />

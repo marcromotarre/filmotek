@@ -2,8 +2,7 @@ import { Box } from "@mui/material";
 import FilmaffinitySlider from "../sliders/filmaffinity-slider";
 import ConfigSection from "./config-section";
 
-const ConfigSectionSlider = ({ slider }) => {
-    console.log(slider)
+const ConfigSectionSlider = ({ slider, userInfo }) => {
   return (
     <ConfigSection title={slider.title} subtitle={slider.subtitle}>
       <Box sx={{ width: "100%", height: "10px" }}></Box>

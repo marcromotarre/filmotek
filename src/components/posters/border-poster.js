@@ -1,7 +1,6 @@
 import { CardMedia } from "@mui/material";
 
 const BorderPoster = ({ image, name, styles }) => {
-  console.log("styles", name, styles, image)
   return (
     <CardMedia
       component="img"

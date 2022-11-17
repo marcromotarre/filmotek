@@ -22,5 +22,4 @@ const PLATFORMS = [
   { name: "FILMIN", appIcon: FILMIN_APP_ICON, selected: false },
 ];
 
-
 export default PLATFORMS;

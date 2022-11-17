@@ -1,19 +1,51 @@
 import { atom } from "recoil";
+import CHIPS from "../data/chips";
 import PLATFORMS from "../data/platforms";
 import POSTERS from "../data/posters";
 import RANKING_PLATFORMS from "../data/ranking-platforms";
 
 export const userPlatformsState = atom({
-  key: "userPlatforms", // unique ID (with respect to other atoms/selectors)
-  default: PLATFORMS,
+  key: "userPlatforms",
+  default: {
+    NETFLIX: false,
+    HBO: false,
+    AMAZON_PRIME_VIDEO: false,
+    DISNEY: false,
+    APPLE: false,
+    FILMIN: false,
+  },
 });
 
 export const userRankingPlatformsState = atom({
   key: "userRankingPlatforms", // unique ID (with respect to other atoms/selectors)
-  default: RANKING_PLATFORMS,
+  default: {
+    ranking_platform: null,
+    FILMAFFINITY: {
+      minimum_rating_value: 3,
+      minimum_votes_value: 500,
+    },
+    IMDB: {
+      minimum_rating_value: 0,
+      minimum_votes_value: 0,
+    },
+    ROTTEN_TOMATOES: {
+      minimum_rating_value: 0,
+      minimum_votes_value: 0,
+    },
+  },
 });
 
-export const userPostersState = atom({
-  key: "userPosters", // unique ID (with respect to other atoms/selectors)
-  default: POSTERS,
+export const userChipState = atom({
+  key: "userChip",
+  default: null,
+});
+
+export const userPosterState = atom({
+  key: "userPoster",
+  default: null,
+});
+
+export const jwtState = atom({
+  key: "jwt",
+  default: null,
 });
