@@ -16,8 +16,12 @@ export default function Home() {
         alignItems: "center",
       }}
     >
-      <Typography sx={{color: "white"}} variant="h1">Bienvenido a Filmotek</Typography>
-      <Typography sx={{color: "white"}} variant="body1">Tu nueva Filmoteka Virtual</Typography>
+      <Typography sx={{ color: "white" }} variant="h1">
+        Bienvenido a Filmotek
+      </Typography>
+      <Typography sx={{ color: "white" }} variant="body1">
+        Tu nueva Filmoteka Virtual
+      </Typography>
       <Button variant="contained">Iniciar Sessión</Button>
     </Box>
   );

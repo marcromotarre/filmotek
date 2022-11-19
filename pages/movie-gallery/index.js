@@ -39,7 +39,7 @@ const MovieGallery = () => {
     }
   }, [userPoster]);
 
-  console.log(userRankingPlatforms.ranking_platform)
+  console.log(userRankingPlatforms.ranking_platform);
 
   const fetchData = async (page = 0) => {
     setPage(page);
@@ -101,16 +101,22 @@ const MovieGallery = () => {
               router.push(`movie/${movie.id}`);
             }}
           >
-            {getChipsByTag(userRankingPlatforms.ranking_platform).find((chip) => chip.name === userChip).component({
-              styles: { width: "auto", height: "auto" },
-              poster: POSTERS.find((poster) => poster.name === userPoster),
-              image: movie.image,
-              name: movie.name,
-              rating: movie.platforms[Object.keys(movie.platforms)[0]].rating,
-              votes: movie.platforms[Object.keys(movie.platforms)[0]].votes,
-            })}
+            {getChipsByTag(userRankingPlatforms.ranking_platform)
+              .find((chip) => chip.name === userChip)
+              .component({
+                styles: { width: "auto", height: "auto" },
+                poster: POSTERS.find((poster) => poster.name === userPoster),
+                image: movie.image,
+                name: movie.name,
+                rating: movie.platforms[Object.keys(movie.platforms)[0]].rating,
+                votes: movie.platforms[Object.keys(movie.platforms)[0]].votes,
+                allAudiencePercentatge:
+                  movie.platforms[Object.keys(movie.platforms)[0]]
+                    .allAudiencePercentatge,
+              })}
           </Box>
         ))}
+        <Box sx={{ height: "100px", width: "100%" }}></Box>
       </InfiniteScroll>
       <CardMedia
         onClick={() => {

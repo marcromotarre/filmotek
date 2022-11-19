@@ -5,6 +5,7 @@ import { RecoilRoot } from "recoil";
 import { useEffect } from "react";
 import axios from "axios";
 import Common from "../src/components/common"
+import { Box } from "@mui/material";
 
 export default function App({ Component, pageProps }: AppProps) {
 
@@ -14,6 +15,8 @@ export default function App({ Component, pageProps }: AppProps) {
     <RecoilRoot>
       <Common />
       <Component {...pageProps} />
+      <Box sx={{  backgroundColor: "#3d3d3d", height: "150px", width: "100%" }}></Box>
+
     </RecoilRoot>
   );
 }
