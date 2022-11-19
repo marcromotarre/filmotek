@@ -113,6 +113,9 @@ const MovieGallery = () => {
                 allAudiencePercentatge:
                   movie.platforms[Object.keys(movie.platforms)[0]]
                     .allAudiencePercentatge,
+                tomatometerTopCriticsPrositiveReviewPercentatge:
+                  movie.platforms[Object.keys(movie.platforms)[0]]
+                    .tomatometerTopCriticsPrositiveReviewPercentatge,
               })}
           </Box>
         ))}

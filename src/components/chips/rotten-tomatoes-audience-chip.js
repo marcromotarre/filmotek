@@ -8,7 +8,7 @@ import BAD_POPCORN_CHIP_ICON from "../../images/ranking-platforms/rotten-tomatoe
 const inter = Inter({
   weight: "900",
 });
-const RottenTomatoesBasicChip = ({
+const RottenTomatoesAudienceChip = ({
   allAudiencePercentatge,
   tomatometerTopCriticsPrositiveReviewPercentatge,
 }) => {
@@ -38,4 +38,4 @@ const RottenTomatoesBasicChip = ({
   );
 };
 
-export default RottenTomatoesBasicChip;
+export default RottenTomatoesAudienceChip;

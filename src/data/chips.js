@@ -2,7 +2,8 @@ import { Box } from "@mui/material";
 import { relative } from "path";
 import FilmaffinityBasicChip from "../components/chips/filmaffinity-basic-chip";
 import ImdbBasicChip from "../components/chips/imdb-basic-chip";
-import RottenTomatoesBasicChip from "../components/chips/rotten-tomatoes-basic-chip";
+import RottenTomatoesTomatometerChip from "../components/chips/rotten-tomatoes-tomatometer-chip";
+import RottenTomatoesAudienceChip from "../components/chips/rotten-tomatoes-audience-chip";
 
 import BorderPoster from "../components/posters/border-poster";
 import RoundedPoster from "../components/posters/rounded-poster";
@@ -13,7 +14,7 @@ export const getChipsByTag = (tag) => {
 const CHIPS = [
   {
     name: "NO_CHIP",
-    component: ({ poster, styles, name, image}) => {
+    component: ({ poster, styles, name, image }) => {
       return (
         <Box sx={{ ...styles, position: "relative" }}>
           {poster.component({ styles: styles?.posterStyle, name, image })}
@@ -53,7 +54,7 @@ const CHIPS = [
     tags: ["IMDB"],
   },
   {
-    name: "BASIC_CHIP",
+    name: "BASIC_CHIP_AUDIENCE",
     component: ({
       poster,
       styles,
@@ -65,9 +66,32 @@ const CHIPS = [
       return (
         <Box sx={{ ...styles, position: "relative" }}>
           {poster.component({ styles: styles?.posterStyle, name, image })}
-          <RottenTomatoesBasicChip
+          <RottenTomatoesAudienceChip
             allAudiencePercentatge={allAudiencePercentatge}
-            tomatometerTopCriticsPrositiveReviewPercentatge={tomatometerTopCriticsPrositiveReviewPercentatge}
+          />
+        </Box>
+      );
+    },
+    selected: false,
+    tags: ["ROTTEN_TOMATOES"],
+  },
+  {
+    name: "BASIC_CHIP_TOMATOMETER",
+    component: ({
+      poster,
+      styles,
+      name,
+      image,
+      allAudiencePercentatge,
+      tomatometerTopCriticsPrositiveReviewPercentatge,
+    }) => {
+      return (
+        <Box sx={{ ...styles, position: "relative" }}>
+          {poster.component({ styles: styles?.posterStyle, name, image })}
+          <RottenTomatoesTomatometerChip
+            tomatometerTopCriticsPrositiveReviewPercentatge={
+              tomatometerTopCriticsPrositiveReviewPercentatge
+            }
           />
         </Box>
       );
