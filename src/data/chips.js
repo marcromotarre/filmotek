@@ -2,6 +2,7 @@ import { Box } from "@mui/material";
 import { relative } from "path";
 import FilmaffinityBasicChip from "../components/chips/filmaffinity-basic-chip";
 import ImdbBasicChip from "../components/chips/imdb-basic-chip";
+import RottenTomatoesBasicChip from "../components/chips/rotten-tomatoes-basic-chip";
 import RottenTomatoesTomatometerChip from "../components/chips/rotten-tomatoes-tomatometer-chip";
 import RottenTomatoesAudienceChip from "../components/chips/rotten-tomatoes-audience-chip";
 
@@ -66,7 +67,33 @@ const CHIPS = [
       return (
         <Box sx={{ ...styles, position: "relative" }}>
           {poster.component({ styles: styles?.posterStyle, name, image })}
+          <RottenTomatoesBasicChip
+           tomatometerTopCriticsPrositiveReviewPercentatge={
+            tomatometerTopCriticsPrositiveReviewPercentatge
+          }
+            allAudiencePercentatge={allAudiencePercentatge}
+          />
+        </Box>
+      );
+    },
+    selected: false,
+    tags: ["ROTTEN_TOMATOES"],
+  },
+  {
+    name: "BASIC_CHIP_AUDIENCE",
+    component: ({
+      poster,
+      styles,
+      name,
+      image,
+      allAudiencePercentatge,
+      tomatometerTopCriticsPrositiveReviewPercentatge,
+    }) => {
+      return (
+        <Box sx={{ ...styles, position: "relative" }}>
+          {poster.component({ styles: styles?.posterStyle, name, image })}
           <RottenTomatoesAudienceChip
+           
             allAudiencePercentatge={allAudiencePercentatge}
           />
         </Box>
