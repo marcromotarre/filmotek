@@ -2,9 +2,10 @@ import axios from "axios";
 import { useEffect } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import {
-    BASE_URL,
+  BASE_URL,
   jwtState,
   userChipState,
+  userFilmaffinityFiltersState,
   userPlatformsState,
   userPosterState,
   userRankingPlatformsState,
@@ -44,8 +45,8 @@ export default function Common() {
         ? "IMDB"
         : "ROTTEN_TOMATOES",
       FILMAFFINITY: {
-        minimum_rating_value: 3,
-        minimum_votes_value: 500,
+        minimum_rating_value: userParams.filmaffinityMinimumRatingValue,
+        minimum_votes_value: userParams.filmaffinityMinimumVotesValue,
       },
       IMDB: {
         minimum_rating_value: 0,

@@ -14,6 +14,7 @@ const ConfigSectionSlider = ({ slider, userInfo }) => {
         valueLabelFormat: slider.valueLabelFormat,
         marks: slider.marks,
         valueLabelDisplay: "on",
+        saveValue: slider.saveValue,
       })}
     </ConfigSection>
   );

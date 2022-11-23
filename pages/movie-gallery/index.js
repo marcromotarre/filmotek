@@ -49,6 +49,13 @@ const MovieGallery = () => {
         params: {
           page,
           ranking_platform: userRankingPlatforms.ranking_platform,
+          min_votes:
+            userRankingPlatforms[userRankingPlatforms.ranking_platform]
+              .minimum_votes_value,
+
+          min_ranking:
+            userRankingPlatforms[userRankingPlatforms.ranking_platform]
+              .minimum_rating_value,
         },
       },
       {

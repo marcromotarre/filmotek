@@ -1,3 +1,4 @@
+import axios from "axios";
 import FILMAFFINITY_APP_ICON from "../../src/images/ranking-platforms/filmaffinity/filmaffinity-app-icon.png";
 import IMDB_APP_ICON from "../../src/images/ranking-platforms/imdb/imdb-app-icon.png";
 import ROTTEN_TOMATOES_APP_ICON from "../../src/images/ranking-platforms/rotten-tomatoes/rotten-tomatoes-app-icon.png";
@@ -7,6 +8,7 @@ import FilmaffinitySlider, {
 import ImdbSlider, {
   ImdbSliderComponent,
 } from "../components/sliders/imdb-slider";
+import { BASE_URL } from "../states/user-state";
 
 const RANKING_PLATFORMS = [
   {
@@ -34,8 +36,35 @@ export const RANKING_PLATFORMS_SLIDERS = ({
         min: 0,
         max: 10,
         step: 0.1,
-        defaultValue: userRankingPlatforms[userRankingPlatforms.ranking_platform].minimum_rating_value,
-
+        defaultValue:
+          userRankingPlatforms[userRankingPlatforms.ranking_platform]
+            .minimum_rating_value,
+        saveValue: ({
+          value,
+          jwt,
+          setUserRankingPlatforms,
+          userRankingPlatforms,
+        }) => {
+          const USER_PARAMS_URL = `${BASE_URL}api/user-params`;
+          setUserRankingPlatforms({
+            ...userRankingPlatforms,
+            FILMAFFINITY: {
+              ...userRankingPlatforms.FILMAFFINITY,
+              minimum_rating_value: value,
+            },
+          });
+          axios.post(
+            USER_PARAMS_URL,
+            {
+              filmaffinityMinimumRatingValue: value,
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${jwt}`,
+              },
+            }
+          );
+        },
         valueLabelFormat: (value) => {
           return value;
         },
@@ -83,10 +112,33 @@ export const RANKING_PLATFORMS_SLIDERS = ({
         min: 0,
         max: 10000,
         step: null,
-        defaultValue: userRankingPlatforms[userRankingPlatforms.ranking_platform].minimum_votes_value,
+        defaultValue:
+          userRankingPlatforms[userRankingPlatforms.ranking_platform]
+            .minimum_votes_value,
 
         valueLabelFormat: (value) => {
           return value;
+        },
+        saveValue: ({ value, jwt }) => {
+          const USER_PARAMS_URL = `${BASE_URL}api/user-params`;
+          setUserRankingPlatforms({
+            ...userRankingPlatforms,
+            FILMAFFINITY: {
+              ...userRankingPlatforms.FILMAFFINITY,
+              minimum_votes_value: value,
+            },
+          });
+          axios.post(
+            USER_PARAMS_URL,
+            {
+              filmaffinityMinimumVotesValue: value,
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${jwt}`,
+              },
+            }
+          );
         },
         marks: [
           {

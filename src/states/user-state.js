@@ -21,8 +21,8 @@ export const userRankingPlatformsState = atom({
   default: {
     ranking_platform: null,
     FILMAFFINITY: {
-      minimum_rating_value: 3,
-      minimum_votes_value: 500,
+      minimum_rating_value: 0,
+      minimum_votes_value: 0,
     },
     IMDB: {
       minimum_rating_value: 0,
@@ -44,6 +44,7 @@ export const userPosterState = atom({
   key: "userPoster",
   default: null,
 });
+
 
 export const jwtState = atom({
   key: "jwt",

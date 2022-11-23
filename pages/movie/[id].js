@@ -39,7 +39,7 @@ const Movie = () => {
     setMovie(movieData.data);
 
     const { data: movieImages } = await axios(
-      `https://api.themoviedb.org/3/movie/${id}?api_key=${TMDB_API_KEY}&language=${LANGUAGE}&append_to_response=images&include_image_language=en,null`
+      `https://api.themoviedb.org/3/movie/${id}?api_key=${TMDB_API_KEY}&language=${LANGUAGE}&append_to_response=images&include_image_language=es,en,null`
     );
     setMovieImages(movieImages);
     console.log(movieImages);
